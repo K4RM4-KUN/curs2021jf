@@ -1,11 +1,12 @@
 <html>
 <body>
 <?php
-ini_set('display_errors', '0');
 $mesActual = getdate();#getdate() es una funcion que crea una array con disitintos datos sobre la fecha(año actual ,mes actual ,dia actual...), estos datos me ayudaran durante el programa para crear el calendario correctamente
-$monthDays = date(t)+1;#date(t) te da un valor numerico igual a la cantidad de dias de el mes actual
+$monthDays = date("t")+1;#date(t) te da un valor numerico igual a la cantidad de dias de el mes actual
 $counter = 1;#esto es simplemente un contador para uno de los bucles
-$diaSemana=date("w",mktime(0,0,0,$mesActual[month],1,$mesActual[year]));#Esta variable consigue el valor numerico igual al dia de la semana del primer dia de el mes actual, pasandole a mktime primero la hora(0,0,0) y despues el mes actual, luego 1 que se refiere al primer dia del mes y por utlimo el año actual
+$month = date("n");
+$year = $mesActual["year"];
+$diaSemana = date("w",mktime(0,0,0,$month*1,1,$year*1));#Esta variable consigue el valor numerico igual al dia de la semana del primer dia de el mes actual, pasandole a mktime primero la hora(0,0,0) y despues el mes actual, luego 1 que se refiere al primer dia del mes y por utlimo el año actual
 
 switch ($diaSemana){ #Este switch determina el numero de espacios antes de el 
 	case 0:      #dia 1 del calendario
@@ -36,7 +37,7 @@ while ($counter != $monthDays) {
     }
 
     while ($week != 7 and $counter != $monthDays){ #Con este bucle creo todos los dias del mes
-        if ($counter == $mesActual[mday]){
+        if ($counter == $mesActual["mday"]){
             echo('<td bgcolor="FF5050" style="font-weight:bold;">');
             echo("$counter</td>");
         }else{
