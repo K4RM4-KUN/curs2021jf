@@ -91,8 +91,8 @@ function controlLogin(){
 function logout(){
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         session_destroy();
-        unset($_COOKIE["rememberMail"]);
-        unset($_COOKIE["rememberPass"]);
+        setcookie("rememberPass", "", time() - +(365*24*60*60)); 
+        setcookie("rememberMail", "", time() - +(365*24*60*60)); 
         header('Location:login.php');
     }
 }
