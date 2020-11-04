@@ -14,9 +14,15 @@
 </head>
 <body>
     <div style="text-align: center; margin-top:220px;">
-        <h1>Hello <?=$_SESSION["username"]?>!</h1> 
+        <h1>Hello <?=ucfirst($_SESSION["username"])?>!</h1> 
         <form  method="post" id="end" name="end">
             <input type="submit" value="Configuracion" name="config">
+            <?php
+                $admin = userType($_SESSION["id"]);
+                if($admin){
+                    echo'<input type="submit" value="Administracion" name="administration">';
+                }
+            ?>
             <input type="submit" value="Cerrar sesion" name="logout">
         </form>
     </div>
