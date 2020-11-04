@@ -536,8 +536,8 @@ function recoveryMail($mail){
     $mail->Port = 587;
     $mail->SMTPSecure = 'tls';
     $mail->SMTPAuth = true;
-    $mail->Username = "karmakunindenait@gmail.com";
-    $mail->Password = "calabasa123456";
+    $mail->Username = "karmakunindenait*****@gmail.com";
+    $mail->Password = "****";
     $mail->setFrom('no-replay@karma.com', 'Servicio automatico de recuperacion.');
     $mail->addAddress($mail, 'Sr/ra');
     $mail->Subject = 'Recuperacion de contraseña.';
