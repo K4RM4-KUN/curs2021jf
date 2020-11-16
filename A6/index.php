@@ -37,49 +37,47 @@
             <input type="submit" value="Mostrar Todos" name="showall">
         </form>
         <form method=post style="margin-bottom:20px;">
-            <input type="text" name="searchtxt" placeholder="Buscar..."><input type="submit" value="Buscar" name="search">
+            <input type="text" name="searchtxt" placeholder="Buscar..."><input type="submit" value="Buscar" name="search"><input type="submit" value="Buscar por categoria" name="searchC">
         </form>
         <center>
             <table><?php
                 $conn = connectToDB2();
-                if(isset($_REQUEST["search"]) || !isset($_REQUEST["showall"])){
+                if(isset($_REQUEST["search"]) || isset($_REQUEST["showall"]) && !isset($_REQUEST["searchC"])){
                     if(isset($_REQUEST["searchtxt"])){
                         $tmp = $_REQUEST["searchtxt"];
-                        $sql = "SELECT products.id, images.path_img, products.nombre, products.descr, products.preu FROM images INNER JOIN products ON images.product_id = products.id WHERE products.nombre LIKE '%$tmp%' OR products.descr LIKE '%$tmp%'";
+                        $sql = "SELECT products.id, images.path_img, products.nombre, products.descr, products.preu FROM (images INNER JOIN products ON images.product_id = products.id) INNER JOIN pro_cat ON pro_cat.product_id = products.id INNER JOIN category ON pro_cat.category_id = category.id WHERE products.nombre LIKE '%$tmp%' OR products.descr LIKE '%$tmp%' OR category.nombre LIKE '%$tmp%'";
                     }else {
                         $sql = "SELECT products.id, images.path_img, products.nombre, products.descr, products.preu FROM images INNER JOIN products ON images.product_id = products.id";
                     }
-                }else {
-                    $sql = "SELECT products.id, images.path_img, products.nombre, products.descr, products.preu FROM images INNER JOIN products ON images.product_id = products.id";
-                }
-                $result = $conn->prepare($sql);
-                if(!$result = $conn ->query($sql)){
-                    die("error ejecuntado la consulta".$conn->error);
-                }
-                if ($result->num_rows >= 0){
-                    $continue = true;
-                    while($continue){
-                        echo "<tr>";
-                        for($x=0 ; $x<4 && $continue ; $x++){
-                            if($product = $result->fetch_assoc()){
-                                echo '<td><table border=1 style="border-color:#0F9582; background-color:#AAD0E8;">
-                                    <tr><td width="250px" height="350px"><img style="width:100%; height:100%;" src="'.$product["path_img"].'"></td></tr>
-                                    <tr><td><a>'.substr($product["nombre"],0,20);
-                                    if(strlen($product["nombre"])>20){echo'...';}
+                    $result = $conn->prepare($sql);
+                    if(!$result = $conn ->query($sql)){
+                        die("error ejecuntado la consulta".$conn->error);
+                    } 
+                    if ($result->num_rows >= 0){
+                        $continue = true;
+                        while($continue){
+                            echo "<tr>";
+                            for($x=0 ; $x<4 && $continue ; $x++){
+                                if($product = $result->fetch_assoc()){
+                                    echo '<td><table border=1 style="border-color:#0F9582; background-color:#AAD0E8;">
+                                        <tr><td width="250px" height="350px"><img style="width:100%; height:100%;" src="'.$product["path_img"].'"></td></tr>
+                                        <tr><td><a>'.substr($product["nombre"],0,20);
+                                        if(strlen($product["nombre"])>20){echo'...';}
+                                        echo'</a></td></tr>';
+                                    echo '<tr><td width="250px"><a>'.substr($product["descr"],0,20);
+                                    if(strlen($product["descr"])>20){echo'...';}
                                     echo'</a></td></tr>';
-                                echo '<tr><td width="250px"><a>'.substr($product["descr"],0,20);
-                                if(strlen($product["descr"])>20){echo'...';}
-                                echo'</a></td></tr>';
-                                echo '<tr><td><a>'.$product["preu"].'€</a></td></tr>
-                                </table></td>';
-                            } else {
-                                $continue = false;
-                            }
+                                    echo '<tr><td><a>'.$product["preu"].'€</a></td></tr>
+                                    </table></td>';
+                                } else {
+                                    $continue = false;
+                                }
 
+                            }
+                            echo "</tr><tr><td height='25px'></td></tr>";
                         }
-                        echo "</tr><tr><td height='25px'></td></tr>";
                     }
-                }
+                } 
             ?></table>
         </center>
     </div>
