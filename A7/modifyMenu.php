@@ -12,7 +12,7 @@
     }else if(isset($_REQUEST["delete_cat"])){
         deleteCategoryTest($_REQUEST["catid"],$_REQUEST["proid"]);
     }else if(isset($_REQUEST["add_cat"])){
-        addCategoryTest($_REQUEST["id"],$_REQUEST["cat_nom"]);
+        addCategoryTest($_REQUEST["proid"],$_REQUEST["cat_nom"]);
     }
 
 ?>
@@ -39,7 +39,6 @@
             <td style="text-align: center; font-weight: bold;" >Precio</td>
             <td style="text-align: center; font-weight: bold;" >Cambiar Imagen</td>
             <td style="text-align: center; font-weight: bold;" ></td>
-            <td style="text-align: center; font-weight: bold;" ></td>
             </tr>
             <?php
             $conn = connectToDB2();
@@ -56,8 +55,8 @@
                     $tmpId = $product["id"];
                     echo '<tr>';
                             echo'<td width="210px">
-                                    <form>
-                                        <input type="hidden" name="proid" style="text-align: center;" size="1" value="'.$product["id"].'"></br>
+                                    <form method="post" id="modify123" name="'.$product["id"].'cat">
+                                        <input name="proid" type="hidden" value="'.$product["id"].'" readonly>
                                         <input name="cat_nom" type="text" maxlength="20" placeholder="Añadir categoria" size="15">
                                         <input type="submit" name="add_cat" value="Añadir">
                                         <table>';  
@@ -68,8 +67,8 @@
                                         }
                                         while($product2 = $result2->fetch_assoc()){
                                             echo '<tr>
-                                                <td><input type="hidden" name="catid" style="text-align: center;" size="1" value="'.$product2["id"].'"><a>-'.$product2["nombre"].'</a></td>
-                                                <td><input type="submit" name="delete_catB" value="Eliminar"></td>
+                                                <td><input type="hidden" name="catid" value="'.$product2["id"].'"><a>-'.$product2["nombre"].'</a></td>
+                                                <td><input type="submit" name="delete_cat" value="Eliminar"></td>
                                             </tr>';
                                         }
                                     echo'</table>
@@ -80,12 +79,17 @@
                                 <td width="90px" height="120px"><img width="100%" height="100%" src="./'.$product["path_img"].'"></td>
                                 <td><input name="nombre" style="text-align: center;" size="25" value="'.$product["nombre"].'" maxlength="50"></td>
                                 <td><textarea name="descripcion" style="text-align: center; resize: none;" rows="7" cols="35" maxlength="150">'.$product["descr"].'</textarea></td>
-                                <td><input type="number" name="precio" placeholder="0.00" min="0" step="0.01" id="productprice" value="'.$product["preu"].'" maxlength="11"></td>';
+                                <td><input type="number" name="precio" placeholder="0.00" min="0" step="0.01" id="productprice" value="'.$product["preu"].'" maxlength="11"></td>
+                                <td><input type="file" name="pr_imagen"></td>';
                               
-                            echo'<td><input type="file" name="pr_imagen"></td>
-                                <td><input type="submit" value="Modificar" name="modifyB"></td>
-                                <td><input type="submit" name="delete" value="Eliminar"></td>
-                            </form>
+                        $consultResult = consultBool("command",$product["id"],"product_id");
+                        if($consultResult){
+                            echo'<td><a style="color:red;">VENDIDO</a></td>';
+                        } else {
+                            echo'<td><input type="submit" value="Modificar" name="modify"><input type="submit" name="delete" value="Eliminar"></td>';
+
+                        }
+                            echo'</form>
                         </tr>';
                     $result2->free();
                 }

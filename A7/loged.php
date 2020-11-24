@@ -5,6 +5,7 @@
     controlLogedPrivate();
     userInfo();
     getButton();
+    buttonGet();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,6 +15,9 @@
     <title><?=$_SESSION["username"]?></title>
 </head>
 <body>
+    <center>
+        <a href="chart.php" style="float:right;"><button style="background-color: #3ED75B; border-radius:50px; border: none; height: 72px;" type="button">CARRITO</button></a>
+    </center> 
     <div style="text-align: center; margin-top:100px; margin-bottom:50px;"> 
     
         <h1>Hello <?=ucfirst($_SESSION["username"])?>!</h1> 
@@ -75,17 +79,38 @@
                             for($x=0 ; $x<4 && $continue ; $x++){
                                 if($product = $result->fetch_assoc()){
                                     if($product["id"] != $last){
+                                        
                                         echo '<td><table border=1 style="border-color:#0F9582; background-color:#AAD0E8;">
                                             <tr><td width="250px" height="350px"><img style="width:100%; height:100%;" src="'.$product["path_img"].'"></td></tr>
                                             <tr><td><a>'.substr($product["nombre"],0,20);
                                             if(strlen($product["nombre"])>20){echo'...';}
-                                            echo'</a></td></tr>';
+                                        echo'</a></td></tr>';
                                         echo '<tr><td width="250px"><a>'.substr($product["descr"],0,20);
                                         if(strlen($product["descr"])>20){echo'...';}
                                         echo'</a></td></tr>';
                                         echo '<tr><td><a>'.$product["preu"].'€</a></td></tr>';
-                                        echo '<tr><td><form><input type="hidden" value="'.$product["id"].'"><input type="submit" value="Añadir al carrito" name="addChart"></form></td></tr>
-                                        </table></td>';
+                                        echo '<tr>
+                                            <td>';
+                                            $consultResult = consultBool("command",$product["id"],"product_id");
+                                            if(!isset($_SESSION["chart"]) && !$consultResult ){
+                                                echo '<form method="post" id="buttonChart" name="'.$product["id"].'"><input type="hidden" name="id" value="'.$product["id"].'"/> 
+                                                    <input type="submit" value="Añadir al carrito" name="addChart"/></form>';
+                                            } else if(isset($_SESSION["chart"]) && !$consultResult ){
+                                                if(in_array($product["id"],$_SESSION["chart"]) && !$consultResult){
+                                                    echo '<form method="post" id="buttonChart" name="'.$product["id"].'"><input type="hidden" name="id" value="'.$product["id"].'"/> 
+                                                        <input style="float:right;" type="submit" value="Quitar producto del carrito" name="delChart"/> </form>';
+        
+                                                } else if (!in_array($product["id"],$_SESSION["chart"]) && !$consultResult){
+                                                    echo '<form method="post" id="buttonChart" name="'.$product["id"].'"><input type="hidden" name="id" value="'.$product["id"].'"/> 
+                                                        <input type="submit" value="Añadir al carrito" name="addChart"/></form>';
+                                                } 
+                                            } else {
+                                                echo '<a style="color:red;">VENDIDO</a>';
+                                            }
+                                        echo '</td>
+                                        </tr>
+                                        </table>
+                                        </td>';
                                     } else {
                                         $x-=1;
                                     }
@@ -119,8 +144,29 @@
                                     if(strlen($product["descr"])>20){echo'...';}
                                     echo'</a></td></tr>';
                                     echo '<tr><td><a>'.$product["preu"].'€</a></td></tr>';
-                                    echo '<tr><td><form><input type="hidden" value="'.$product["id"].'"><input type="submit" value="Añadir al carrito" name="addChart"></form></td></tr>
-                                    </table></td>';
+                                    echo '<tr>
+                                            <td>';
+                                            $consultResult = consultBool("command",$product["id"],"product_id");
+                                            if(!isset($_SESSION["chart"]) && !$consultResult ){
+                                                echo '<form method="post" id="buttonChart" name="'.$product["id"].'"><input type="hidden" name="id" value="'.$product["id"].'"/> 
+                                                    <input type="submit" value="Añadir al carrito" name="addChart"/></form>';
+                                            } else if(isset($_SESSION["chart"]) && !$consultResult ){
+                                                if(in_array($product["id"],$_SESSION["chart"]) && !$consultResult){
+                                                    echo '<form method="post" id="buttonChart" name="'.$product["id"].'"><input type="hidden" name="id" value="'.$product["id"].'"/> 
+                                                        <input style="float:right;" type="submit" value="Quitar producto del carrito" name="delChart"/> </form>';
+        
+                                                } else if (!in_array($product["id"],$_SESSION["chart"]) && !$consultResult){
+                                                    echo '<form method="post" id="buttonChart" name="'.$product["id"].'"><input type="hidden" name="id" value="'.$product["id"].'"/> 
+                                                        <input type="submit" value="Añadir al carrito" name="addChart"/></form>';
+                                                } 
+                                            } else {
+                                                echo '<a style="color:red;">VENDIDO</a>';
+                                            }
+                                    echo '
+                                    </td>
+                                    </tr>
+                                    </table>
+                                    </td>';
                                 } else {
                                     $continue = false;
                                 }

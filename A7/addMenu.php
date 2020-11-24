@@ -24,8 +24,8 @@
         <form enctype="multipart/form-data" method="post" id="addmenu" name="addmenu">
             <label for="productname">Nombre del producto </label><input type="text" name="productName" id="productname" value="<?php if(isset($_REQUEST["productName"]) && !empty($error)){echo $_REQUEST["productName"];}?>" maxlength="50"></br>
             <label for="productdesc">Descripcion </label><textarea name="productDesc" id="productdesc" style="resize: none;"rows="2" cols="35" maxlength="150"><?php if(isset($_REQUEST["productDesc"]) && !empty($error)){echo $_REQUEST["productDesc"];}?></textarea></br>
-            <label for="productdesc">Precio </label><input type="number" name="productPrice" placeholder="0.00" min="0" step="0.01" id="productprice" value="<?php if(isset($_REQUEST["productPrice"]) && !empty($error)){echo $_REQUEST["productPrice"];}?>" maxlength="11"></br>
-            <label for="productname">Categoria</label><input type="text" name="productCat" id="productcat" value="<?php if(isset($_REQUEST["categoryName"]) && !empty($error)){echo $_REQUEST["categoryName"];}?>" maxlength="20"></br>
+            <label for="productprice">Precio </label><input type="number" name="productPrice" placeholder="0.00" min="0" step="0.01" id="productprice" value="<?php if(isset($_REQUEST["productPrice"]) && !empty($error)){echo $_REQUEST["productPrice"];}?>" maxlength="11"></br>
+            <label for="productcat">Categoria</label><input type="text" name="productCat" id="productcat" value="<?php if(isset($_REQUEST["categoryName"]) && !empty($error)){echo $_REQUEST["categoryName"];}?>" maxlength="20"></br>
             <label for="productdesc">Imagen </label><input type="file" name="productImg" id="productimg"></br>
             <input type="submit" value="Añadir producto" name="add">
         </form>

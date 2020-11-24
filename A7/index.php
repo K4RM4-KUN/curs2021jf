@@ -69,8 +69,29 @@
                                     if(strlen($product["descr"])>20){echo'...';}
                                     echo'</a></td></tr>';
                                     echo '<tr><td><a>'.$product["preu"].'€</a></td></tr>';
-                                    echo '<tr><td><form><input type="hidden" value="'.$product["id"].'"><input type="submit" value="Añadir al carrito" name="addChart"></form></td></tr>
-                                    </table></td>';
+                                    echo '<tr>
+                                            <td>';
+                                            $consultResult = consultBool("command",$product["id"],"product_id");
+                                            if(!isset($_SESSION["chart"]) && !$consultResult ){
+                                                echo '<form method="post" id="buttonChart" name="'.$product["id"].'"><input type="hidden" name="id" value="'.$product["id"].'"/> 
+                                                    <input type="submit" value="Añadir al carrito" name="addChart"/></form>';
+                                            } else if(isset($_SESSION["chart"]) && !$consultResult ){
+                                                if(in_array($product["id"],$_SESSION["chart"]) && !$consultResult){
+                                                    echo '<form method="post" id="buttonChart" name="'.$product["id"].'"><input type="hidden" name="id" value="'.$product["id"].'"/> 
+                                                        <input style="float:right;" type="submit" value="Quitar producto del carrito" name="delChart"/> </form>';
+        
+                                                } else if (!in_array($product["id"],$_SESSION["chart"]) && !$consultResult){
+                                                    echo '<form method="post" id="buttonChart" name="'.$product["id"].'"><input type="hidden" name="id" value="'.$product["id"].'"/> 
+                                                        <input type="submit" value="Añadir al carrito" name="addChart"/></form>';
+                                                } 
+                                            } else {
+                                                echo '<a style="color:red;">VENDIDO</a>';
+                                            }
+                                    echo '
+                                    </td>
+                                    </tr>
+                                    </table>
+                                    </td>';
                                 } else {
                                     $continue = false;
                                 }
@@ -100,8 +121,29 @@
                                     if(strlen($product["descr"])>20){echo'...';}
                                     echo'</a></td></tr>';
                                     echo '<tr><td><a>'.$product["preu"].'€</a></td></tr>';
-                                    echo '<tr><td><form><input type="hidden" value="'.$product["id"].'"><input type="submit" value="Añadir al carrito" name="addChart"></form></td></tr>
-                                    </table></td>';
+                                    echo '<tr>
+                                            <td>';
+                                            $consultResult = consultBool("command",$product["id"],"product_id");
+                                            if(!isset($_SESSION["chart"]) && !$consultResult ){
+                                                echo '<form method="post" id="buttonChart" name="'.$product["id"].'"><input type="hidden" name="id" value="'.$product["id"].'"/> 
+                                                    <input type="submit" value="Añadir al carrito" name="addChart"/></form>';
+                                            } else if(isset($_SESSION["chart"]) && !$consultResult ){
+                                                if(in_array($product["id"],$_SESSION["chart"]) && !$consultResult){
+                                                    echo '<form method="post" id="buttonChart" name="'.$product["id"].'"><input type="hidden" name="id" value="'.$product["id"].'"/> 
+                                                        <input style="float:right;" type="submit" value="Quitar producto del carrito" name="delChart"/> </form>';
+        
+                                                } else if (!in_array($product["id"],$_SESSION["chart"]) && !$consultResult){
+                                                    echo '<form method="post" id="buttonChart" name="'.$product["id"].'"><input type="hidden" name="id" value="'.$product["id"].'"/> 
+                                                        <input type="submit" value="Añadir al carrito" name="addChart"/></form>';
+                                                } 
+                                            } else {
+                                                echo '<a style="color:red;">VENDIDO</a>';
+                                            }
+                                    echo '
+                                    </td>
+                                    </tr>
+                                    </table>
+                                    </td>';
                                 } else {
                                     $continue = false;
                                 }
