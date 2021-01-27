@@ -1,0 +1,18 @@
+login->loged
+si REQUEST(dataForm) == dataBD {
+    ok loged
+} si no {
+    no loged
+}
+register->insertsql
+insert dataForm to sql
+loged(admin,user)
+si $user == $admin {
+    admin
+}
+logout->login
+admin->adminstration
+adminstration->changeData(anyuser) or logout
+user->changeData(user) or logout
+changeData
+
